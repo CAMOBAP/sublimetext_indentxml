@@ -1,0 +1,24 @@
+name: test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: Run Syntax Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+    
+      - name: validate JSONs
+        run: |
+          testjson() {
+            python -c "import json; file = open('$1'); json.loads(file.read()); file.close()"
+          }
+          for json in *ublime-*; do testjson "$json"; done
+
+      - uses: SublimeText/syntax-test-action@v2
+        with:
+          build: 4084  # or 'latest' for the latest ST3 build
+    
